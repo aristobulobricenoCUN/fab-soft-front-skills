@@ -5,25 +5,25 @@ description: Senior Angular architecture specialist for FAB (Fabrica Architectur
 
 # Angular Architect FAB - Skill
 
-## Propósito
+## Purpose
 
-Esta skill guía la creación de proyectos web Angular siguiendo la **Arquitectura FAB** (Fabrica Architecture Base). Un agente debe usar esta skill para generar, analizar o extender proyectos Angular delstack CUN.
-
----
-
-## Stack Tecnológico Base
-
-| Tecnología        | Propósito                                   |
-| ----------------- | ------------------------------------------- |
-| Angular 17+       | Framework principal (standalone components) |
-| Angular Material  | Componentes UI base                         |
-| Bootstrap 5       | Grid y utilidades CSS                       |
-| Jest              | Unit testing                                |
-| TypeScript strict | Tipado estricto                             |
+This skill guides the creation of Angular web projects using the **FAB Architecture** (Factory Architecture Base). An agent should use this skill to generate, analyze, or extend Angular projects from the CUN stack.
 
 ---
 
-## Arquitectura de Carpetas
+## STechnology Stack
+
+| Technology        | Purpose                                |
+| ----------------- | -------------------------------------- |
+| Angular 17+       | Main framework (standalone components) |
+| Angular Material  | Core UI components                     |
+| Bootstrap 5       | Grid and CSS utilities                 |
+| Jest              | Unit testing                           |
+| TypeScript strict | Strict typing                          |
+
+---
+
+## Folder Structure
 
 ```
 src/
@@ -90,9 +90,35 @@ src/
 
 ---
 
-## Patrones de Arquitectura
+## Rules
 
-### 1. Componentes Standalone
+### Separation of Concerns Rule in Angular Components
+
+Angular components must follow a strict separation of responsibilities to maintain a clean, scalable, and maintainable architecture.
+
+Each file has a single responsibility:
+
+- `.ts` → component logic and behavior
+- `.html` → structure and template markup
+- `.css` / `.scss` → visual styles
+
+Avoid mixing logic, templates, and styles in the same file.  
+Inline templates and inline styles should not be used for production components except for minimal demos or temporary prototypes.
+
+This rule ensures:
+
+- Better readability
+- Easier maintenance
+- Cleaner code reviews
+- Improved scalability
+- Consistent project structure
+- Better collaboration between developers and AI agents
+
+For validation patterns, see: [references/rules/components/component.md](references/rules/components/component.md).
+
+## Architectural Patterns
+
+### 1. Standalone Components
 
 ```typescript
 @Component({
@@ -259,34 +285,34 @@ async getItems(): Promise<void> {
 
 ---
 
-## Convenciones de Código
+## Coding Conventions
 
 ### TypeScript
 
 - `strict: true`
 - `noImplicitOverride: true`
 - `strictTemplates: true`
-- NO usar `any`
-- Prefijo `_` para miembros privados escribibles: `_itemsControl`
-- Interfaces SIN prefijo "I": `User` no `IUser`
+- DO NOT use `any`
+- Use the `_` prefix for writable private members: `_itemsControl`
+- Interfaces WITHOUT the “I” prefix: `User`, not `IUser`
 
-### Archivos
+### Files
 
-| Tipo        | Convención              | Ejemplo                     |
-| ----------- | ----------------------- | --------------------------- |
-| Componentes | PascalCase.component.ts | `my-component.component.ts` |
-| Servicios   | PascalCase.service.ts   | `auth.service.ts`           |
-| Interfaces  | PascalCase.interface.ts | `user.interface.ts`         |
-| Mocks       | PascalCase.mock.ts      | `user.mock.ts`              |
-| Utils       | kebab-case.utils.ts     | `form-errors.utils.ts`      |
-| Pipes       | PascalCase.pipe.ts      | `form-control.pipe.ts`      |
-| Tests       | \*.spec.ts              | `auth.service.spec.ts`      |
-| Templates   | kebab-case.html         | `my-component.html`         |
+| Type       | Convention              | Example                     |
+| ---------- | ----------------------- | --------------------------- |
+| Components | PascalCase.component.ts | `my-component.component.ts` |
+| Services   | PascalCase.service.ts   | `auth.service.ts`           |
+| Interfaces | PascalCase.interface.ts | `user.interface.ts`         |
+| Mocks      | PascalCase.mock.ts      | `user.mock.ts`              |
+| Utils      | kebab-case.utils.ts     | `form-errors.utils.ts`      |
+| Pipes      | PascalCase.pipe.ts      | `form-control.pipe.ts`      |
+| Tests      | \*.spec.ts              | `auth.service.spec.ts`      |
+| Templates  | kebab-case.html         | `my-component.html`         |
 
-### Imports (orden)
+### Imports (order)
 
 1. Angular core/external
-2. Componentes/pipes standalone de Angular
+2. Standalone Angular components/pipes
 3. Third-party imports
 4. Internal `@shared`, `@core`
 5. Relative imports
@@ -314,7 +340,7 @@ export const createMockUsers = (count: number = 5): User[] =>
 
 ---
 
-## Servicios Core Requeridos
+## Required Core Services
 
 ### AuthService
 
@@ -343,11 +369,11 @@ export const hide = () => _loading.set(false);
 
 ## Guards
 
-| Guard                  | Propósito                    |
-| ---------------------- | ---------------------------- |
-| `auth.guard.ts`        | Protege rutas autenticadas   |
-| `auth-logged.guard.ts` | Redirige si ya está logueado |
-| `role.guard.ts`        | Acceso basado en roles       |
+| Guard                  | Purpose                        |
+| ---------------------- | ------------------------------ |
+| `auth.guard.ts`        | Protects authenticated routes  |
+| `auth-logged.guard.ts` | Redirects if already logged in |
+| `role.guard.ts`        | Role-based access              |
 
 ```typescript
 export const authGuard: CanActivateFn = () => {
@@ -375,7 +401,7 @@ export const environment = {
     username: "USER",
     password: "PASS",
   },
-  // ... APIs específicas del proyecto
+  // ... Project-specific APIs
 };
 ```
 
@@ -385,10 +411,10 @@ export const environment = {
 
 ### Jest Setup
 
-- Usar `@faker-js/faker` para mocks
-- `jest.clearAllMocks()` en `afterEach`
-- `httpMock.verify()` para verificar requests
-- Mocks en `**/*.mock.ts`
+- Use `@faker-js/faker` for mocks
+- `jest.clearAllMocks()` in `afterEach`
+- `httpMock.verify()` to verify requests
+- Mocks in `**/*.mock.ts`
 
 ### Test Pattern
 
@@ -422,7 +448,7 @@ describe("MyService", () => {
 
 ## Form Validation
 
-Usar utilidades compartidas en `@shared/utils/form/form-errors.ts`:
+Use shared utilities in `@shared/utils/form/form-errors.ts`:
 
 ```typescript
 // Template
@@ -430,59 +456,59 @@ Usar utilidades compartidas en `@shared/utils/form/form-errors.ts`:
   {{ getFieldError('email', form) }}
 </div>
 
-// No acceder directamente a control.errors
+// Do not access control.errors directly
 ```
 
 ---
 
-## Angular Material Components Comunes
+## Common Angular Material Components
 
-- `MatIconModule` - Iconos
-- `MatButtonModule` - Botones
+- `MatIconModule` - Icons
+- `MatButtonModule` - Buttons
 - `MatInputModule` - Inputs
-- `MatSelectModule` - Selects
-- `MatPaginatorModule` - Paginación
-- `MatExpansionModule` - Paneles expandibles
+- `MatSelectModule` - Select elements
+- `MatPaginatorModule` - Pagination
+- `MatExpansionModule` - Expandable panels
 - `MatCheckboxModule` - Checkboxes
 - `MatChipsModule` - Chips
-- `MatDialogModule` - Diálogos
-- `MatSnackBarModule` - Notificaciones
+- `MatDialogModule` - Dialogs
+- `MatSnackBarModule` - Notifications
 
 ---
 
-## Lista de Patrones a Implementar por Proyecto
+## List of Patterns to Implement per Project
 
-Al crear un nuevo proyecto, verificar:
+When creating a new project, verify:
 
-- [ ] Estructura de carpetas según plantilla
-- [ ] Interceptor de loading (request counter)
-- [ ] Interceptor de auth (token injection + 401 refresh)
-- [ ] Interceptor de error (5xx handling)
-- [ ] AuthService con token management
-- [ ] LoadingService con signals
-- [ ] ErrorService con SweetAlert
+- [ ] Folder structure according to template
+- [ ] Loading interceptor (request counter)
+- [ ] Auth interceptor (token injection + 401 refresh)
+- [ ] Error interceptor (5xx handling)
+- [ ] AuthService with token management
+- [ ] LoadingService with signals
+- [ ] ErrorService with SweetAlert
 - [ ] FormControlPipe
 - [ ] Shared components (button, input, select, spinner, modal-alert)
 - [ ] Guards (auth, auth-logged)
-- [ ] Environments.ts con APIs del proyecto
+- [ ] Environments.ts with project APIs
 - [ ] Lazy-loaded routes
-- [ ] Layout component con header/footer
-- [ ] OnPush en todos los componentes
-- [ ] Mocks con faker-js
+- [ ] Layout component with header/footer
+- [ ] OnPush in all components
+- [ ] Mocks with faker-js
 - [ ] Jest configured
 
 ---
 
-## Contexto Requerido del Proyecto
+## Required Project Context
 
-Para generar un proyecto específico, obtener:
+To create a specific project, please provide:
 
-1. **Nombre del proyecto**
-2. **Descripción breve**
-3. **Lista de APIs** (URLs, credenciales)
-4. **Lista de módulos/features**
-5. **Integraciones externas** (Firebase, Zoho, etc.)
-6. **Componentes shared requeridos**
-7. **Guards específicos**
-8. **Rutas principales**
-9. **Reglas adicionales** (si aplica)
+1. **Project name**
+2. **Brief description**
+3. **List of APIs** (URLs, credentials)
+4. **List of modules/features**
+5. **External integrations** (Firebase, Zoho, etc.)
+6. **Required shared components**
+7. **Specific guards**
+8. **Main routes**
+9. **Additional rules** (if applicable)
