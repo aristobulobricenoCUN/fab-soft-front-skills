@@ -63,6 +63,12 @@ When Angular Material requires animations, use mocks or minimal providers instea
 
 For detailed patterns, see [references/rules/jest/animations.md](references/rules/jest/animations.md).
 
+## Migration from Jasmine + Karma to Jest
+
+When migrating existing Angular 17+ projects from Jasmine + Karma to Jest, follow the migration guide:
+
+For migration patterns and configuration, see: [references/rules/jest/migration.md](references/rules/jest/migration.md)
+
 ## General Rules For Angular
 
 Reactive forms MUST reuse the shared validation utilities defined by the project instead of creating custom validation logic or directly accessing control errors in templates.
